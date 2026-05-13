@@ -1,0 +1,18 @@
+winget install --interactive --exact dorssel.usbipd-win
+usbipd list
+usbipd bind --busid <BUSID>
+usbipd attach --wsl --busid <BUSID>
+
+
+avr-gcc -Os -DF_CPU=16000000UL -mmcu=atmega328p -o tsk_01.elf tsk_01.c
+avr-objcopy -O ihex -R .eeprom tsk_01.elf tsk_01.hex
+avrdude -F -V -c arduino -p ATMEGA328P -P /dev/ttyACM0 -b 115200 -U flash:w:tsk_01.hex
+
+
+avrdude -F -V -c arduino -p ATMEGA328P -P /dev/ttyACM0 -b 115200 -U flash:w:tsk_01.hex
+
+avr-gcc -Os -DF_CPU=16000000UL -mmcu=atmega328p -o tsk_03.elf tsk_03.c
+avr-objcopy -O ihex -R .eeprom tsk_03.elf tsk_03.hex
+avrdude -F -V -c arduino -p ATMEGA328P -P /dev/ttyACM0 -b 115200 -U flash:w:tsk_03.hex
+
+avrdude -F -V -c arduino -p ATMEGA328P -P /dev/ttyACM0 -b 115200 -U flash:w:tsk_04.hex
