@@ -2,7 +2,7 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
-volatile uint8_t pin_changed = 0;
+volatile uint8_t pin_changed = 0; //Changed state (Read from mem)
 
 // Triggered whenever the state of Pin 7 changes
 ISR(PCINT2_vect) {

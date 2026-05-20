@@ -15,7 +15,7 @@ int main(void) {
         // If the state has changed (either pressed OR released)
         if (current_state != last_state) {
             
-            _delay_ms(50); // Pause to let the mechanical contacts settle
+            _delay_ms(50); // Pause 
 
             // Read the pin again to ensure it wasn't just noise
             current_state = (PIND & (1 << PD7)) >> PD7;
