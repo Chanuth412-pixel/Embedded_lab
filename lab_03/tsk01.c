@@ -2,26 +2,20 @@
 
 void delay_timer0_2ms(void)
 {
-    TCNT0 = 225;        // Initial value
-
-    TCCR0A = 0x00;      // Normal mode
-    TCCR0B = 0x05;      // Prescaler = 1024
-
-    while ((TIFR0 & 0x01) == 0);   // Wait for overflow
-
-    TCCR0A = 0x00;
-    TCCR0B = 0x00;      // Stop timer
-
-    TIFR0 = 0x01;       // Clear overflow flag
+    TCNT0 = 131;              
+    TCCR0A = 0x00;            
+    TCCR0B = (1 << CS02);     
+    while ((TIFR0 & (1 << TOV0)) == 0); 
+    TCCR0B = 0x00;            
+    TIFR0 |= (1 << TOV0);     
 }
 
 int main(void)
 {
-    DDRB |= (1 << PB5);     // PB5 as output
-
+    DDRB |= (1 << PB5);     
     while (1)
     {
-        PORTB ^= (1 << PB5);    // Toggle LED
+        PORTB ^= (1 << PB5);  
         delay_timer0_2ms();
     }
 }

@@ -1,0 +1,11 @@
+Selected prescaler = 1024
+
+Ttick = 1024 / 16MHz
+      = 64 us
+
+Max count = 256
+
+Max interval = 256 x 64 us
+             = 16384 us
+             = 16.384 ms
+             

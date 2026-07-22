@@ -1,57 +1,42 @@
+#define F_CPU 16000000UL // Required for _delay_ms()
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <util/delay.h>
+
 
 ISR(TIMER1_OVF_vect)
 {
-    TCNT1 = 3036;              // 1 second preload with prescaler 256
-    PORTB ^= (1 << PB5);       // Toggle PB5 every 1 second
+    TCNT1 = 3036; 
+    PORTB ^= (1 << PB5);
 }
 
 void timer1_init(void)
 {
-    TCNT1 = 3036;              // Initial preload
-
-    TCCR1A = 0x00;             // Normal mode
-    TCCR1B = (1 << CS12);      // Prescaler = 256
-
-    TIMSK1 = (1 << TOIE1);     // Enable Timer1 overflow interrupt
-
-    sei();                     // Enable global interrupts
-}
-
-void simple_delay(void)
-{
-    for (volatile long i = 0; i < 50000; i++);
+    TCNT1 = 3036;
+    TCCR1A = 0x00;
+    TCCR1B = (1 << CS12);   
+    TIMSK1 = (1 << TOIE1);  
 }
 
 int main(void)
 {
-    DDRB |= (1 << PB5) | (1 << PB0) | (1 << PB1) | (1 << PB2) | (1 << PB3);
-
+    DDRB |= (1 << PB0) | (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB5);
     timer1_init();
-
-    unsigned char pattern[] = {
-        (1 << PB0),
-        (1 << PB1),
-        (1 << PB2),
-        (1 << PB3),
-        (1 << PB2),
-        (1 << PB1)
-    };
-
-    int i = 0;
+    sei(); 
 
     while (1)
     {
-        PORTB &= ~((1 << PB0) | (1 << PB1) | (1 << PB2) | (1 << PB3));
-        PORTB |= pattern[i];
-
-        i++;
-        if (i >= 6)
+        for (int i = 0; i < 4; i++) 
         {
-            i = 0;
+            PORTB = (PORTB & 0xF0) | (1 << i);
+            _delay_ms(100);
         }
 
-        simple_delay();
+        for (int i = 2; i > 0; i--) 
+        {
+            PORTB = (PORTB & 0xF0) | (1 << i);
+            _delay_ms(100);
+        }
     }
+    return 0;
 }
